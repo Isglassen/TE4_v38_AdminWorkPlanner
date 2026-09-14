@@ -9,6 +9,40 @@ const tasksLists = {
 const taskProgress = document.getElementById("task-progress");
 const doneString = document.getElementById("done-string");
 
+function updateTask(event) {
+	const li = event.target.closest("li");
+	const id = parseInt(li.dataset.id, 10);
+	const checkbox = li.querySelector("input");
+	const select = li.querySelector("select");
+
+	const task = state.tasks.find(v => v.id == id);
+	if (!task) throw new Error("Task not found");
+
+	task.priority = select.value;
+	task.done = checkbox.checked;
+
+	render();
+}
+
+function deleteTask(event) {
+	if (!event.target.classList.contains("delete")) return;
+
+	const li = event.target.closest("li");
+	const id = parseInt(li.dataset.id, 10);
+
+	const task = state.tasks.find(v => v.id == id);
+	if (!task) throw new Error("Task not found");
+
+	state.tasks = state.tasks.filter(v => v.id != id);
+
+	render();
+}
+
+Object.values(tasksLists).forEach(v => {
+	v.addEventListener("input", updateTask);
+	v.addEventListener("click", deleteTask);
+});
+
 function render() {
 	Object.values(tasksLists).forEach(v => v.innerHTML = "");
 	for (const task of state.tasks) {
@@ -16,6 +50,9 @@ function render() {
 		const label = li.appendChild(document.createElement("label"));
 		const checkbox = label.appendChild(document.createElement("input"));
 		label.appendChild(document.createTextNode(task.title));
+
+		li.classList.add("task");
+		li.dataset.id = task.id;
 
 		const id = "task" + task.id;
 
@@ -42,6 +79,11 @@ function render() {
 		lowOption.textContent = "Low";
 
 		select.value = task.priority;
+
+		const button = li.appendChild(document.createElement("button"));
+		button.classList.add("delete");
+		button.type = "button";
+		button.textContent = "Delete";
 	}
 
 	const done = state.tasks.filter(v => v.done);
