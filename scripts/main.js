@@ -2,6 +2,8 @@ import { saveState, loadState } from "./data.js";
 
 const state = loadState();
 const tasksList = document.getElementById("tasks");
+const taskProgress = document.getElementById("task-progress");
+const doneString = document.getElementById("done-string");
 
 function render() {
 	tasksList.innerHTML = "";
@@ -19,6 +21,14 @@ function render() {
 
 		checkbox.checked = task.done;
 	}
+
+	const done = state.tasks.filter(v => v.done);
+
+	taskProgress.max = state.tasks.length;
+	taskProgress.value = done.length;
+
+	taskProgress.textContent = `${Math.round(done.length / state.tasks.length)}%`;
+	doneString.textContent = `${done.length}/${state.tasks.length}`;
 }
 
 render();
