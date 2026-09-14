@@ -12,9 +12,15 @@ const tasks = [
 ];
 
 export function saveState(state) {
-
+	localStorage.setItem("state", JSON.stringify(state));
 }
 
-export function loadState() {
-	return { tasks };
+export function loadState({ reset } = { reset: false }) {
+	const data = JSON.parse(localStorage.getItem("state")) ?? { tasks };
+
+	if (reset ?? false) {
+		return { tasks }
+	}
+
+	return data;
 }

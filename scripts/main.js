@@ -8,6 +8,7 @@ const tasksLists = {
 };
 const taskProgress = document.getElementById("task-progress");
 const doneString = document.getElementById("done-string");
+const resetButton = document.getElementById("reset-button");
 
 function updateTask(event) {
 	const li = event.target.closest("li");
@@ -21,6 +22,7 @@ function updateTask(event) {
 	task.priority = select.value;
 	task.done = checkbox.checked;
 
+	saveState(state);
 	render();
 }
 
@@ -35,8 +37,17 @@ function deleteTask(event) {
 
 	state.tasks = state.tasks.filter(v => v.id != id);
 
+	saveState(state);
 	render();
 }
+
+function resetTasks() {
+	state.tasks = loadState({ reset: true }).tasks;
+	saveState(state);
+	render();
+}
+
+resetButton.addEventListener("click", resetTasks);
 
 Object.values(tasksLists).forEach(v => {
 	v.addEventListener("input", updateTask);
