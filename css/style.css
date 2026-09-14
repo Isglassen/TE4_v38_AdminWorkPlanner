@@ -2,3 +2,7 @@
 	display: inline-block;
 	margin-right: 1em;
 }
+
+.task-list li.highlight {
+	background: wheat;
+}

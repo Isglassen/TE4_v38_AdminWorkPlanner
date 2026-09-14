@@ -53,4 +53,23 @@ function render() {
 	doneString.textContent = `${done.length}/${state.tasks.length}`;
 }
 
+function findTask(id) {
+	const old = document.querySelectorAll("li.highlight")
+	for (const li of old) {
+		li.classList.remove("highlight");
+	}
+
+	const task = state.tasks.find(v => v.id == id);
+	if (!task) {
+		return alert(`Task ${id} not found`);
+	}
+
+	const li = document.querySelector(`li:has(#task${id})`);
+	li.classList.add("highlight");
+	li.scrollIntoView({ behavior: "smooth" });
+}
+
+// Access in console;
+window.findTask = findTask;
+
 render();
