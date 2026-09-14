@@ -11,14 +11,26 @@
 		<h1>Tasks</h1>
 		<label for="task-progress">Tasks done: <span id="done-string"></span></label>
 		<progress id="task-progress"></progress>
-		<ul id="tasks" class="task-list">
+		<h2>High</h2>
+		<ul id="high-tasks" class="task-list">
 			<!--
 				<li class="task">
 					<label for="task0">
 						<input type="checkbox" id="task0"> Task description
 					</label>
+					<label for="task0-priority">
+						<select id="task0-priority">
+							<option value="high">High</option>
+							...
+						</select>
+						priority
+					</label>
 				</li>
 			-->
 		</ul>
+		<h2>Medium</h2>
+		<ul id="medium-tasks" class="task-list"></ul>
+		<h2>Low</h2>
+		<ul id="low-tasks" class="task-list"></ul>
 	</body>
 </html>

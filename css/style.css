@@ -1,0 +1,4 @@
+.task-list li>label {
+	display: inline-block;
+	margin-right: 1em;
+}
