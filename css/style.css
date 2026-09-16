@@ -1,3 +1,38 @@
+body {
+	font-family: Arial, sans-serif;
+}
+
+.hidden {
+	display: none;
+}
+
+input {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 8px;
+}
+
+input.error {
+	border-color: red;
+	background-color: #ffe6e6;
+}
+
+form p {
+	margin-top: 0px;
+}
+
+p.error {
+	color: red;
+	font-size: 0.9em;
+	margin-top: 5px;
+}
+
+p.success {
+	color: green;
+	font-size: 0.9em;
+	margin-top: 5px;
+}
+
 .task-list li>label {
 	display: inline-block;
 	margin-right: 1em;

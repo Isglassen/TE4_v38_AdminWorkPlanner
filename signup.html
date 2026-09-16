@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Create Account</title>
+		<link href="css/style.css" rel="stylesheet">
+		<script src="scripts/signup.js" type="module" defer></script>
+	</head>
+	<body>
+		<h1>Create Account</h1>
+		<section>
+			<h2>Step 1 &mdash; Account</h2>
+			<form id="account-form" novalidate>
+				<label for="email">Email:</label>
+				<input type="email" id="email" name="email" required>
+				<p id="email-message"></p>
+				<label for="password">Password:</label>
+				<input type="password" id="password" name="password" min="2" required>
+				<p id="password-message"></p>
+				<label for="confirm-password">Confirm Password:</label>
+				<input type="password" id="confirm-password" name="confirm-password" min="2" required>
+				<p id="confirm-password-message"></p>
+				<input type="submit" value="Continue">
+			</form>
+		</section>
+		<section class="hidden">
+			<h2>Step 2 &mdash; Profile</h2>
+			<form id="profile-form" novalidate>
+				<label for="first-name">First Name:</label>
+				<input type="text" id="first-name" name="first-name" min="2" required>
+				<p id="first-name-message"></p>
+				<label for="last-name">Last Name:</label>
+				<input type="text" id="last-name" name="last-name" min="2" required>
+				<p id="last-name-message"></p>
+				<label for="age">Age:</label>
+				<input type="number" id="age" name="age" min="18" max="120" required>
+				<p id="age-message"></p>
+				<input type="submit" value="Continue">
+			</form>
+		</section>
+		<section class="hidden">
+			<h2>Step 3 &mdash; Confirmation</h2>
+			<form id="confirmation-form" novalidate>
+				<h3>Name</h3>
+				<p id="confirm-name"></p>
+				<h3>Email</h3>
+				<p id="confirm-email"></p>
+				<h3>Age</h3>
+				<p id="confirm-age"></p>
+				<input type="submit" value="Submit">
+				<p id="confirmation-message" class="success"></p>
+			</form>
+		</section>
+	</body>
+</html>

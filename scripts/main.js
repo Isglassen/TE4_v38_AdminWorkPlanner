@@ -10,6 +10,31 @@ const taskProgress = document.getElementById("task-progress");
 const doneString = document.getElementById("done-string");
 const resetButton = document.getElementById("reset-button");
 
+const session = JSON.parse(localStorage.getItem("session"));
+const sessionEl = document.getElementById("current-session");
+
+if (session) {
+	const name = sessionEl.appendChild(document.createElement("p"));
+	name.textContent = `Signed in as ${session.user.firstName}`;
+	const email = sessionEl.appendChild(document.createElement("p"));
+	email.textContent = `Email: ${session.user.email}`;
+	const method = sessionEl.appendChild(document.createElement("p"));
+	method.textContent = `Signed in via ${session.method}`;
+	const timeP = sessionEl.appendChild(document.createElement("p"));
+	timeP.appendChild(document.createTextNode("Session: "));
+	const timeSpan = timeP.appendChild(document.createElement("span"));
+	timeSpan.id = "session-time";
+	const sessionStart = Temporal.Instant.fromEpochMillisecond(session.sessionStart * 1000);
+	setInterval(() => {
+		timeSpan.textContent = Temporal.now.Instant().since(sessionStart).toLocaleString();
+	}, 1000);
+} else {
+	const button = sessionEl.appendChild(document.createElement("a"));
+	button.className = "button";
+	button.textContent = "Sign In";
+	button.href = "login.html";
+}
+
 function updateTask(event) {
 	const li = event.target.closest("li");
 	const id = parseInt(li.dataset.id, 10);
