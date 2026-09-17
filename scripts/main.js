@@ -159,7 +159,7 @@ function render() {
 	taskProgress.max = state.tasks.length;
 	taskProgress.value = done.length;
 
-	taskProgress.textContent = `${Math.round(done.length / state.tasks.length)}%`;
+	taskProgress.textContent = `${Math.round(100 * done.length / state.tasks.length)}%`;
 	doneString.textContent = `${done.length}/${state.tasks.length}`;
 }
 
