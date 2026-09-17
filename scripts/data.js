@@ -15,12 +15,8 @@ export function saveState(state) {
 	localStorage.setItem("state", JSON.stringify(state));
 }
 
-export function loadState({ reset } = { reset: false }) {
+export function loadState() {
 	const data = JSON.parse(localStorage.getItem("state")) ?? { tasks };
-
-	if (reset ?? false) {
-		return { tasks }
-	}
 
 	return data;
 }

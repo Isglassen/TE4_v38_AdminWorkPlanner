@@ -1,5 +1,12 @@
 import { saveState, loadState } from "./data.js";
 
+const METHODS = {
+	"creation": "Account Creation",
+	"bankId": "BankID",
+	"2fa": "Two-Factor Authentication",
+	"securityToken": "Security Token",
+}
+
 const state = loadState();
 const tasksLists = {
 	high: document.getElementById("high-tasks"),
@@ -14,20 +21,44 @@ const session = JSON.parse(localStorage.getItem("session"));
 const sessionEl = document.getElementById("current-session");
 
 if (session) {
+	const sessionFormat = new Intl.DurationFormat("en", {
+		style: "digital",
+		hoursDisplay: "auto",
+	})
+
 	const name = sessionEl.appendChild(document.createElement("p"));
 	name.textContent = `Signed in as ${session.user.firstName}`;
+
 	const email = sessionEl.appendChild(document.createElement("p"));
 	email.textContent = `Email: ${session.user.email}`;
+
 	const method = sessionEl.appendChild(document.createElement("p"));
-	method.textContent = `Signed in via ${session.method}`;
+	method.textContent = `Signed in via ${METHODS[session.method]}`;
+
 	const timeP = sessionEl.appendChild(document.createElement("p"));
 	timeP.appendChild(document.createTextNode("Session: "));
+
 	const timeSpan = timeP.appendChild(document.createElement("span"));
 	timeSpan.id = "session-time";
-	const sessionStart = Temporal.Instant.fromEpochMillisecond(session.sessionStart * 1000);
-	setInterval(() => {
-		timeSpan.textContent = Temporal.now.Instant().since(sessionStart).toLocaleString();
-	}, 1000);
+
+	const sessionStart = Temporal.Instant.fromEpochMilliseconds(session.sessionStart * 1000);
+	const updateSessionTime = () => {
+		timeSpan.textContent = sessionFormat.format(
+			Temporal.Now.instant()
+				.since(sessionStart)
+				.round({ largestUnit: "hours", smallestUnit: "seconds" })
+		);
+	}
+	setInterval(updateSessionTime, 1000);
+	updateSessionTime();
+
+	const button = sessionEl.appendChild(document.createElement("button"));
+	button.type = "button";
+	button.textContent = "Sign Out";
+	button.addEventListener("click", () => {
+		localStorage.removeItem("session");
+		window.location.reload();
+	});
 } else {
 	const button = sessionEl.appendChild(document.createElement("a"));
 	button.className = "button";
@@ -66,13 +97,14 @@ function deleteTask(event) {
 	render();
 }
 
-function resetTasks() {
-	state.tasks = loadState({ reset: true }).tasks;
+function resetStorage() {
+	localStorage.clear();
+	state.tasks = loadState().tasks;
 	saveState(state);
 	render();
 }
 
-resetButton.addEventListener("click", resetTasks);
+resetButton.addEventListener("click", resetStorage);
 
 Object.values(tasksLists).forEach(v => {
 	v.addEventListener("input", updateTask);

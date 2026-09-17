@@ -4,7 +4,7 @@ import { getUsers, saveUsers } from './data.js';
 // a function to write to that message box, and a validate function which invokes the passed function.
 // The passed function has access to this, and should return { value: data } or { error: true };
 // The passed function will receive the trimmed input as an argument.
-function createFormHanler(id, validator) {
+function createFormHanler(id, validator, trim = true) {
 	const input = document.getElementById(id);
 	const messageBox = document.getElementById(id + '-message');
 
@@ -27,7 +27,9 @@ function createFormHanler(id, validator) {
 		},
 		validate() {
 			this.write();
-			return this._validate.call(this, this.input.value.trim());
+			let input = this.input.value;
+			if (trim) input = input.trim();
+			return this._validate.call(this, input);
 		},
 		_validate: validator,
 	}
@@ -71,7 +73,7 @@ const passwordHandler = createFormHanler('password', function (password) {
 		return { error: true };
 	}
 	return { value: password };
-});
+}, false);
 
 const confirmPasswordHandler = createFormHanler('confirm-password', function (confirmPassword) {
 	if (!confirmPassword) {
@@ -83,7 +85,7 @@ const confirmPasswordHandler = createFormHanler('confirm-password', function (co
 		return { error: true };
 	}
 	return { value: confirmPassword };
-});
+}, false);
 
 const firstNameHandler = createFormHanler('first-name', function (firstName) {
 	if (!firstName) {
@@ -194,7 +196,14 @@ confirmForm.addEventListener('submit', function (event) {
 	users.push(newUser);
 	saveUsers(users);
 
-	localStorage.setItem('session', JSON.stringify({ user: newUser, sessionStart: Temporal.now.instant().epochMilliseconds / 1000, method: "creation" }));
+	localStorage.setItem('session', JSON.stringify({
+		user: {
+			email: newUser.email,
+			firstName: newUser.firstName,
+		},
+		sessionStart: Temporal.Now.instant().epochMilliseconds / 1000,
+		method: "creation"
+	}));
 
 	confirmationMessage.textContent = 'Form submitted successfully!';
 

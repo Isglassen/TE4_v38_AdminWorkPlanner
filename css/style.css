@@ -6,9 +6,19 @@ body {
 	display: none;
 }
 
+button, .button {
+	background-color: #eee;
+	color: black;
+	text-decoration: none;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
 input {
 	border: 1px solid #ccc;
-	border-radius: 4px;
+	border-radius: 8px;
 	padding: 8px;
 }
 
@@ -21,14 +31,14 @@ form p {
 	margin-top: 0px;
 }
 
-p.error {
-	color: red;
+p.success {
+	color: green;
 	font-size: 0.9em;
 	margin-top: 5px;
 }
 
-p.success {
-	color: green;
+p.error {
+	color: red;
 	font-size: 0.9em;
 	margin-top: 5px;
 }
