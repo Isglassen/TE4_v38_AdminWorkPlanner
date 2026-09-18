@@ -38,6 +38,7 @@ function createFormHanler(id, validator, trim = true) {
 const accountForm = document.getElementById('account-form');
 const loginMessage = document.getElementById('login-message');
 const methodSelection = document.getElementById('method-selection');
+const methodError = document.getElementById('method-error');
 
 const users = getUsers();
 
@@ -93,6 +94,13 @@ methodSelection.addEventListener('click', function (event) {
 	if (!el.dataset.method) return;
 
 	const method = el.dataset.method;
+
+	if (method !== "2fa") {
+		methodError.textContent = 'Verification failed. Only 2FA method is currently supported.';
+		return;
+	}
+
+	methodError.textContent = '';
 
 	localStorage.setItem('session', JSON.stringify({
 		user: loginUser,
