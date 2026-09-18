@@ -28,6 +28,18 @@
 		<label for="task-progress">Tasks done: <span id="done-string"></span></label>
 		<progress id="task-progress"></progress>
 		<button type="button" id="reset-button">Reset localStorage</button>
+		<form id="new-task-form">
+			<label for="new-task">New task: <input id="new-task" type="text" name="title"></label>
+			<label for="new-task-priority">Priority:
+				<select id="new-task-priority" name="priority">
+					<option value="high">High</option>
+					<option value="medium">Medium</option>
+					<option value="low">Low</option>
+				</select>
+			</label>
+			<button type="submit">Add Task</button>
+			<p id="new-task-message" class="error"></p>
+		</form>
 		<h2>High</h2>
 		<ul id="high-tasks" class="task-list">
 			<!--

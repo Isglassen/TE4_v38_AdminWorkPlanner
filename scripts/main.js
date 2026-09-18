@@ -16,6 +16,8 @@ const tasksLists = {
 const taskProgress = document.getElementById("task-progress");
 const doneString = document.getElementById("done-string");
 const resetButton = document.getElementById("reset-button");
+const addTaskForm = document.getElementById("new-task-form");
+const addTaskFeedback = document.getElementById("new-task-message");
 
 const session = JSON.parse(localStorage.getItem("session"));
 const sessionEl = document.getElementById("current-session");
@@ -178,6 +180,36 @@ function findTask(id) {
 	li.classList.add("highlight");
 	li.scrollIntoView({ behavior: "smooth" });
 }
+
+addTaskForm.addEventListener("submit", (event) => {
+	event.preventDefault();
+
+	const data = new FormData(addTaskForm);
+
+	const title = data.get("title").trim();
+	const priority = data.get("priority");
+
+	if (!title) {
+		addTaskFeedback.textContent = "Task cannot be empty";
+		return;
+	}
+
+	if (!["low", "medium", "high"].includes(priority)) {
+		addTaskFeedback.textContent = "Invalid priority";
+		return;
+	}
+
+	state.tasks.push({
+		id: state.tasks.length ? Math.max(...state.tasks.map(v => v.id)) + 1 : 1,
+		title,
+		priority,
+		done: false,
+	});
+
+	saveState(state);
+	render();
+	addTaskForm.reset();
+});
 
 // Access in console;
 window.findTask = findTask;
