@@ -18,6 +18,7 @@ const doneString = document.getElementById("done-string");
 const resetButton = document.getElementById("reset-button");
 const addTaskForm = document.getElementById("new-task-form");
 const addTaskFeedback = document.getElementById("new-task-message");
+const clearDoneButton = document.getElementById("clear-done");
 
 const session = JSON.parse(localStorage.getItem("session"));
 const sessionEl = document.getElementById("current-session");
@@ -209,6 +210,13 @@ addTaskForm.addEventListener("submit", (event) => {
 	saveState(state);
 	render();
 	addTaskForm.reset();
+});
+
+clearDoneButton.addEventListener("click", () => {
+	state.tasks = state.tasks.filter(v => !v.done);
+
+	saveState(state);
+	render();
 });
 
 // Access in console;
