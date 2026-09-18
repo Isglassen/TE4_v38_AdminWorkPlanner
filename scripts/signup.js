@@ -205,7 +205,7 @@ confirmForm.addEventListener('submit', function (event) {
 		method: "creation"
 	}));
 
-	confirmationMessage.textContent = 'Form submitted successfully!';
+	confirmationMessage.textContent = 'Signup successful! Redirecting to home page...';
 
 	setTimeout(() => {
 		window.location.href = 'index.html';
