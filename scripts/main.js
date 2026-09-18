@@ -70,10 +70,9 @@ if (session) {
 }
 
 function updateTask(event) {
-	const li = event.target.closest("li");
-	const id = parseInt(li.dataset.id, 10);
-	const checkbox = li.querySelector("input");
-	const select = li.querySelector("select");
+	const id = parseInt(event.target.dataset.id, 10);
+	const checkbox = event.target.closest(".task-list").querySelector(`input[data-id="${id}"]`);
+	const select = event.target.closest(".task-list").querySelector(`select[data-id="${id}"]`);
 
 	const task = state.tasks.find(v => v.id == id);
 	if (!task) throw new Error("Task not found");
@@ -88,8 +87,7 @@ function updateTask(event) {
 function deleteTask(event) {
 	if (!event.target.classList.contains("delete")) return;
 
-	const li = event.target.closest("li");
-	const id = parseInt(li.dataset.id, 10);
+	const id = parseInt(event.target.dataset.id, 10);
 
 	const task = state.tasks.find(v => v.id == id);
 	if (!task) throw new Error("Task not found");
@@ -117,23 +115,21 @@ Object.values(tasksLists).forEach(v => {
 function render() {
 	Object.values(tasksLists).forEach(v => v.innerHTML = "");
 	for (const task of state.tasks) {
-		const li = tasksLists[task.priority].appendChild(document.createElement("li"));
-		const label = li.appendChild(document.createElement("label"));
+		const grid = tasksLists[task.priority];
+		const label = grid.appendChild(document.createElement("label"));
 		const checkbox = label.appendChild(document.createElement("input"));
 		label.appendChild(document.createTextNode(task.title));
-
-		li.classList.add("task");
-		li.dataset.id = task.id;
 
 		const id = "task" + task.id;
 
 		label.for = id;
 		checkbox.id = id;
 		checkbox.type = "checkbox";
+		checkbox.dataset.id = task.id;
 
 		checkbox.checked = task.done;
 
-		const priorityLabel = li.appendChild(document.createElement("label"));
+		const priorityLabel = grid.appendChild(document.createElement("label"));
 		const select = priorityLabel.appendChild(document.createElement("select"));
 		priorityLabel.appendChild(document.createTextNode(" priority"));
 
@@ -150,8 +146,10 @@ function render() {
 		lowOption.textContent = "Low";
 
 		select.value = task.priority;
+		select.dataset.id = task.id;
 
-		const button = li.appendChild(document.createElement("button"));
+		const button = grid.appendChild(document.createElement("button"));
+		button.dataset.id = task.id;
 		button.classList.add("delete");
 		button.type = "button";
 		button.textContent = "Delete";
@@ -164,22 +162,6 @@ function render() {
 
 	taskProgress.textContent = `${Math.round(100 * done.length / state.tasks.length)}%`;
 	doneString.textContent = `${done.length}/${state.tasks.length}`;
-}
-
-function findTask(id) {
-	const old = document.querySelectorAll("li.highlight")
-	for (const li of old) {
-		li.classList.remove("highlight");
-	}
-
-	const task = state.tasks.find(v => v.id == id);
-	if (!task) {
-		return alert(`Task ${id} not found`);
-	}
-
-	const li = document.querySelector(`li:has(#task${id})`);
-	li.classList.add("highlight");
-	li.scrollIntoView({ behavior: "smooth" });
 }
 
 addTaskForm.addEventListener("submit", (event) => {
@@ -218,8 +200,5 @@ clearDoneButton.addEventListener("click", () => {
 	saveState(state);
 	render();
 });
-
-// Access in console;
-window.findTask = findTask;
 
 render();
